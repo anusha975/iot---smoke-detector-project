@@ -1,0 +1,45 @@
+#define FLAME_PIN 2         
+#define SMOKE_PIN A0        
+#define SMOKE_THRESHOLD 300 
+
+#define BUZZER_PIN 3        
+#define LED_PIN 4           
+#define RELAY_PIN 5         
+
+void setup() {
+  pinMode(FLAME_PIN, INPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
+
+  Serial.begin(9600);  
+}
+
+void loop() {
+  int flameDetected = digitalRead(FLAME_PIN);
+  int smokeValue = analogRead(SMOKE_PIN);
+
+  Serial.print("Smoke level: ");
+  Serial.println(smokeValue);
+
+  
+  if (flameDetected == LOW) {  
+    digitalWrite(BUZZER_PIN, HIGH);  
+    digitalWrite(RELAY_PIN, HIGH);   
+    digitalWrite(LED_PIN, LOW);      
+  } 
+  
+  else if (smokeValue > SMOKE_THRESHOLD) {  
+    digitalWrite(LED_PIN, HIGH);            
+    digitalWrite(BUZZER_PIN, LOW);          
+    digitalWrite(RELAY_PIN, LOW);           
+  } 
+
+  else {
+    digitalWrite(BUZZER_PIN, LOW);          
+    digitalWrite(LED_PIN, LOW);             
+    digitalWrite(RELAY_PIN, LOW);           
+  }
+
+  delay(500); 
+}
